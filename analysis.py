@@ -32,20 +32,25 @@ def my_analysis(context, scope: list[dict]) -> None:
             context.environment,
         )
     )
+    
     if not account_token:
         return ValueError("Missing value: 'account_token' Environment Variable.")
 
     my_account = Account({"token": account_token[0]["value"]})
     # Get the variables form_payload, form_port and device_id sent by the widget/dashboard.
     payload = list(filter(lambda payload: payload["variable"] == "form_payload", scope))
+    
     if not payload:
         return print('Missing "form_payload" in the data scope.')
+    
     device_id = payload[0]["device_id"]
     payload = payload[0]["payload"]
 
     port = list(filter(lambda payload: payload["variable"] == "form_port", scope))
+    
     if not port:
         return print('Missing "form_port" in the data scope o.')
+    
     port = port[0]["value"]
 
     result = sendDownlink(
